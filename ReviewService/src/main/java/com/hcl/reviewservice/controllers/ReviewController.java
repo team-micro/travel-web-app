@@ -1,5 +1,6 @@
 package com.hcl.reviewservice.controllers;
 
+import com.hcl.reviewservice.exceptions.ReviewIdNotFoundException;
 import com.hcl.reviewservice.models.Review;
 import com.hcl.reviewservice.repositories.ReviewRepository;
 import org.slf4j.Logger;
@@ -20,7 +21,8 @@ public class ReviewController {
         logger.trace("Home method accessed");
         return "Review Page";
     }
-    @PostMapping
+
+    @PostMapping("/add")
     public String addReview(@RequestParam int destId, @RequestParam String author,
                                    @RequestParam String subject, @RequestParam String content) {
         try {
@@ -38,7 +40,7 @@ public class ReviewController {
         }
     }
 
-    @GetMapping(path="/all")
+    @GetMapping("/all")
     public Iterable<Review> getAllReviews() {
         logger.trace("get-all method accessed");
         try {
@@ -51,7 +53,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-    public Review getReviewById(@PathVariable("id") int reviewId) {
+    public Review getReviewById(@PathVariable("id") int reviewId) throws ReviewIdNotFoundException {
         logger.trace("get-by-id method accessed");
         if (!reviewRepository.existsById(reviewId)) {
             logger.error("Could not find review by id");
@@ -60,11 +62,7 @@ public class ReviewController {
         }
 
         logger.trace("Successfully found review #" + reviewId);
-        try {
-            return reviewRepository.findReviewById(reviewId);
-        } catch (Exception e) {
-            throw e;
-        }
+        return reviewRepository.findReviewById(reviewId);
 
     }
 
