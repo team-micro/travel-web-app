@@ -1,27 +1,36 @@
 package com.hcl.reviewservice.models;
 
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "review")
+@Table(name = "Review")
 public class Review {
     @Id
-    @Column(name="reviewId", unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer reviewId;
-    @Column(name="destinationId", unique = false)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "destination_id")
+    @NotNull
     private Integer destId;
+    @Column(name = "author")
+    @NotNull
     private String author;
+    @Column(name = "review_subject")
+    @NotNull
     private String subject;
+    @Column(name = "content")
+    @NotNull
     private String content;
 
-    public Integer getReviewId() {
-        return reviewId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setReviewId(int reviewId) {
-        this.reviewId = reviewId;
+    public void setId(int reviewId) {
+        this.id = reviewId;
     }
 
     public Integer getDestId() {

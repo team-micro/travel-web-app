@@ -32,7 +32,8 @@ public class ReviewController {
             review.setAuthor(author);
             review.setSubject(subject);
             review.setContent(content);
-            logger.trace("Successfully added " + review.getReviewId() + "to database!");
+            reviewRepository.save(review);
+            logger.trace("Successfully added " + review.getId() + "to database!");
             return "Review saved!";
         } catch (Exception e) {
             logger.trace("Failed to add review to database.");
@@ -86,7 +87,7 @@ public class ReviewController {
             reviewToBeUpdated.setContent(content);
             reviewRepository.save(reviewToBeUpdated);
             logger.trace("Successfully updated review #" + reviewId);
-            return "Updated review #" + reviewToBeUpdated.getReviewId();
+            return "Updated review #" + reviewToBeUpdated.getId();
         } catch (Exception e) {
             logger.error("Failed to update review #" + reviewId + ", see exception log");
             return "Could not update review: " + e;
