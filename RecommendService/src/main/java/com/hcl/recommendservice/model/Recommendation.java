@@ -20,11 +20,11 @@ public class Recommendation {
     private Long destId;
 
     @NotBlank
-    private String author_recommendation;
+    private String author;
 
     @NotBlank
     private int rate;
 
     @NotBlank
-    private String content_recommendation;
+    private String content;
 }
