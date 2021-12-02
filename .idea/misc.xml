@@ -3,7 +3,6 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/ReviewService/pom.xml" />
         <option value="$PROJECT_DIR$/RecommendService/pom.xml" />
         <option value="$PROJECT_DIR$/DestinationService/pom.xml" />
         <option value="$PROJECT_DIR$/TravelCompositeService/pom.xml" />
