@@ -10,11 +10,12 @@
     </parent>
     <groupId>com.hcl</groupId>
     <artifactId>ReviewService</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>ReviewService</name>
     <description>ReviewService</description>
     <properties>
         <java.version>11</java.version>
+        <jar.finalName>${project.name}</jar.finalName>
     </properties>
     <dependencies>
         <dependency>

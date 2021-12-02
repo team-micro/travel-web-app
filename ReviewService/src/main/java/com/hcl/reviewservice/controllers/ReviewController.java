@@ -23,20 +23,14 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public String addReview(@RequestParam int destId, @RequestParam String author,
-                                   @RequestParam String subject, @RequestParam String content) {
+    public String addReview(@RequestBody Review review) {
         try {
             logger.trace("Add method accessed");
-            Review review = new Review();
-            review.setDestId(destId);
-            review.setAuthor(author);
-            review.setSubject(subject);
-            review.setContent(content);
             reviewRepository.save(review);
-            logger.trace("Successfully added " + review.getId() + "to database!");
+            logger.trace("Successfully added " + review.getId() + " to database!");
             return "Review saved!";
         } catch (Exception e) {
-            logger.trace("Failed to add review to database.");
+            logger.error("Failed to add review to database.");
             return "Couldn't add new review item, exception: " + e;
         }
     }
@@ -50,7 +44,6 @@ public class ReviewController {
             logger.error("Failed to get list of reviews, see exception log");
             throw e;
         }
-
     }
 
     @GetMapping("/{id}")
@@ -64,13 +57,10 @@ public class ReviewController {
 
         logger.trace("Successfully found review #" + reviewId);
         return reviewRepository.findReviewById(reviewId);
-
     }
 
     @PostMapping("/update/{id}")
-    public String updateReviewById(@PathVariable("id") int reviewId,
-                                                 @RequestParam int destId, @RequestParam String author,
-                                                 @RequestParam String subject, @RequestParam String content) {
+    public String updateReviewById(@PathVariable("id") int reviewId, @RequestBody Review review) {
 
         logger.trace("update-by-id method accessed");
         if (!reviewRepository.existsById(reviewId)) {
@@ -81,10 +71,10 @@ public class ReviewController {
         logger.trace("Successfully found review #" + reviewId);
         try {
             Review reviewToBeUpdated = reviewRepository.findReviewById(reviewId);
-            reviewToBeUpdated.setDestId(destId);
-            reviewToBeUpdated.setAuthor(author);
-            reviewToBeUpdated.setSubject(subject);
-            reviewToBeUpdated.setContent(content);
+            reviewToBeUpdated.setDestId(review.getDestId());
+            reviewToBeUpdated.setAuthor(review.getAuthor());
+            reviewToBeUpdated.setSubject(review.getSubject());
+            reviewToBeUpdated.setContent(review.getContent());
             reviewRepository.save(reviewToBeUpdated);
             logger.trace("Successfully updated review #" + reviewId);
             return "Updated review #" + reviewToBeUpdated.getId();
@@ -92,9 +82,8 @@ public class ReviewController {
             logger.error("Failed to update review #" + reviewId + ", see exception log");
             return "Could not update review: " + e;
         }
-
-
     }
+
     @GetMapping("/delete/all")
     public String deleteAllReviews() {
         if (reviewRepository.findAll() == null) {
@@ -109,7 +98,6 @@ public class ReviewController {
             logger.error("Failed to delete database, see exception log");
             return "Failed to delete database: " + e;
         }
-
     }
     @GetMapping("/delete/{id}")
     public String deleteReviewById(@PathVariable("id") Integer reviewId) {
@@ -125,6 +113,5 @@ public class ReviewController {
             logger.error("Could not delete review #" + reviewId);
             return "Failed to delete review #" + reviewId + ", exception log: " + e;
         }
-
     }
 }
