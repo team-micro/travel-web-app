@@ -10,6 +10,7 @@
         <module name="DestinationService" />
         <module name="TravelCompositeService" />
         <module name="RecommendService" />
+        <module name="ReviewService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
