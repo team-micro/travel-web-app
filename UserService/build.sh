@@ -6,7 +6,10 @@ mvn clean && mvn package
 
 # Build image and test run in container
 docker build -t henrylao/user-service:latest .
+<<<<<<< HEAD
 docker push herny
+=======
+>>>>>>> bf3cacedcfc4a71d9cad359e62194130b2a3b8df
 docker run henrylao/user-service:latest
 
 # WARNING: 

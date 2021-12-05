@@ -1,11 +1,13 @@
 package com.hcl.userservice.model;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users_table")
+//@Table(name = "users_table")
+@Table(name = "Users")
 //@Data   // useful annotation to reduce boilerplate getter/setter
 public class User {
     // -----------------------------------------
@@ -15,12 +17,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long userId;
-
+    private int userId;
     @NonNull
 //    @Column(name = "email")
     private String email;
-
     @NonNull
     @Column(name = "password")
     private String password;
@@ -40,6 +40,17 @@ public class User {
     @NonNull
     @Column(name = "last_name")
     private String lastName;
+
+//    @Column(name="destination_ids")
+//    @OneToMany(mappedBy = "")
+//    private List<Review> destinationIds;
+
+//    @OneToMany(mappedBy = "reviews")
+//    private List<String> reviewIds;
+
+//    @OneToMany(mappedBy = "recommendations")
+//    private List<Recommendation> recommendations = new ArrayList<>();
+
     //	//    The target destination supplied by Destination service
 //	@Column(name = "destination")
 //	private Destination destination;
@@ -58,6 +69,10 @@ public class User {
     // -----------------------------------------
     public User() {
 
+        email = null;
+        password = null;
+        username = null;
+        firstName = null;
     }
 
     public User(@NonNull String email,
@@ -87,19 +102,19 @@ public class User {
     // -----------------------------------------
     //  MINIMUM SPEC
 
-    public String getEmail() {
+    public @NotNull String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NotNull String email) {
         this.email = email;
     }
 
-    public String getPassword() {
+    public @NotNull String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NotNull String password) {
         this.password = password;
     }
 
@@ -116,27 +131,27 @@ public class User {
     }
 
 
-    public String getUsername() {
+    public @NotNull String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NotNull String username) {
         this.username = username;
     }
 
-    public String getFirstName() {
+    public @NotNull String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@NotNull String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public @NotNull String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(@NotNull String lastName) {
         this.lastName = lastName;
     }
 
