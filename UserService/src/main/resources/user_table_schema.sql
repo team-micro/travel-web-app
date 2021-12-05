@@ -1,4 +1,4 @@
-create table users_table
+create table Users
 (
     user_id   INT          not null auto_increment,
     email     varchar(255) not null,
