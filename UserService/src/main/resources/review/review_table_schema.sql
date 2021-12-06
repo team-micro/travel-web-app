@@ -1,7 +1,7 @@
 -- auto-generated definition
-create table review
+create table review_table
 (
-    id             int          not null
+    id             int auto_increment
         primary key,
     author         varchar(255) null,
     content        varchar(255) null,
