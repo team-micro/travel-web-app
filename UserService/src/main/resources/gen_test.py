@@ -2,7 +2,7 @@ import numpy as np
 import names
 np.random.seed(777)
 
-base_sql = """insert into `Users`(
+base_sql = """insert into `user_table`(
     `username`,
     `password`,
     `is_admin`,
