@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 //@CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class UserController {
     boolean DEBUG = true;
     @Autowired
