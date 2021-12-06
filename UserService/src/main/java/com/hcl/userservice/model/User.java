@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 //@Table(name = "users_table")
-@Table(name = "Users")
+@Table(name = "user_table")
 //@Data   // useful annotation to reduce boilerplate getter/setter
 public class User {
     // -----------------------------------------
