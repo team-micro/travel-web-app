@@ -1,5 +1,4 @@
-package com.hcl.springboot.model;
-/*
+package com.hcl.destinationservice.models;/*
  * 1) Create a class for Destination in order for object creation
  * 2) Create getters and setters
  * 3) Make sure we can add
@@ -12,6 +11,7 @@ public class Destination {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	//TO-DO: INCREMENT THE ID FOR MONGODB
+	@Column(name="id")
 	private int id;
 	private String place;
 	private String country;
