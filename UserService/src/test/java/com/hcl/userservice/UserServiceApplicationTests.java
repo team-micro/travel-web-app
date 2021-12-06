@@ -1,10 +1,10 @@
-package com.hcl.eurekaserviceregistry;
+package com.hcl.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServiceRegistrationDiscoveryServiceApplicationTests {
+class UserServiceApplicationTests {
 
     @Test
     void contextLoads() {

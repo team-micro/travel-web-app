@@ -7,6 +7,8 @@ import com.hcl.userservice.model.Recommendation;
 import com.hcl.userservice.model.Review;
 import com.hcl.userservice.model.User;
 import com.hcl.userservice.respository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -24,11 +26,14 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
+    Logger logger = LoggerFactory.getLogger(UserController.class);
+
     boolean DEBUG = true;
     @Autowired
     UserRepository userRepository;
 
-    public static boolean isValidPassword(String password) {
+    public boolean isValidPassword(String password) {
+        logger.trace("Home method accessed");
         String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(password);
@@ -36,21 +41,26 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String userId) {
+        logger.trace("GET method all users");
         try {
             List<User> users = new ArrayList<User>();
 
-            if (title == null)
+            if (userId == null) {
+                logger.trace("GET method all users");
                 userRepository.findAll().forEach(users::add);
+            }
 //            else
 //                userRepository.findByTitleContaining(title).forEach(users::add);
 
             if (users.isEmpty()) {
+                logger.trace("GET method all users -- empty");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
+            logger.trace("GET method all users");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -73,12 +83,15 @@ public class UserController {
      */
     @PostMapping("/users/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        logger.trace("POST create a new user");
         try {
             if (userRepository.existsByEmail(user.getEmail())) {
+                logger.error("POST create a new user: existing email");
                 return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
             }
 
             if (!isValidPassword(user.getPassword()) && !DEBUG) {
+                logger.error("POST create a new user: invalid password");
                 return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
             }
             User newUser = new User(
@@ -102,6 +115,7 @@ public class UserController {
 
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
+            logger.error("POST create a new user: error unknown");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -117,7 +131,7 @@ public class UserController {
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         Optional<User> userData = userRepository.findById(id);
-        System.out.println(userData);
+        logger.trace("PUT update on existing user");
         if (userData.isPresent()) {
             User _user = userData.get();
             // MINIMUM
@@ -140,26 +154,32 @@ public class UserController {
 //			_user.setPublished(user.isPublished());
             return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
         } else {
+            logger.trace("PUT update on existing user: could not find user");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/users?={id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
+        logger.trace("DELETE update on existing user");
         try {
             userRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            logger.error("PUT update on existing user");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/users")
     public ResponseEntity<HttpStatus> deleteAllUsers() {
+        logger.trace("PUT update on existing user");
         try {
+            logger.trace("PUT update on existing user");
             userRepository.deleteAll();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            logger.error("DELETE update on existing user");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -173,6 +193,7 @@ public class UserController {
      * @return
      */
     private HttpEntity<? extends Object> pingHelper(Integer port, String resourceName) {
+        logger.trace("PUT update on existing user");
         try {
             // TODO: NOTE endpoint formatting is subject to change, this is for basic integration testing
             String uri = String.format("http://localhost:%d/api/%s", port, resourceName);
@@ -180,19 +201,32 @@ public class UserController {
             RestTemplate restTemplate = new RestTemplate();
             Object result = null;
             if (resourceName.equals("review")) {
+                logger.trace("PUT update on existing user");
+
                 result = (Review) restTemplate.getForObject(uri, Review.class);
             } else if (resourceName.equals("destination")) {
+                logger.trace("PUT update on existing user");
+
                 result = (Destination) restTemplate.getForObject(uri, Destination.class);
             } else if (resourceName.equals("recommendation")) {
+                logger.trace("PUT update on existing user");
+
                 result = (Recommendation) restTemplate.getForObject(uri, Recommendation.class);
             }
 
             if (result == null) {
+                logger.trace("PUT update on existing user");
+
+
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             } else {
+                logger.trace("PUT update on existing user");
+
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
         } catch (Exception e) {
+            logger.trace("PUT update on existing user");
+
             System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
@@ -208,18 +242,24 @@ public class UserController {
     @GetMapping("/users/reviews/test")
 
     public ResponseEntity<HttpStatus> pingReviewService() {
+        logger.trace("PUT update on existing user");
+
         // TODO: add REVIEW endpoint
         return (ResponseEntity<HttpStatus>) pingHelper(8081, "review");
     }
 
     @GetMapping("/users/destinations/test")
     public ResponseEntity<HttpStatus> pingDestinationService() {
+        logger.trace("PUT update on existing user");
+
         // TODO: add DESTINATION endpoint
         return (ResponseEntity<HttpStatus>) pingHelper(8082, "destination");
     }
 
     @GetMapping("/users/recommendations/test")
     public ResponseEntity<HttpStatus> pingRecommendService() {
+        logger.trace("PUT update on existing user");
+
         // TODO: add RECOMMENDATION endpoint
         return (ResponseEntity<HttpStatus>) pingHelper(8083, "recommendation");
     }
