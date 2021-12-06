@@ -1,13 +1,12 @@
-package com.hcl.springboot.user.controller;
+package com.hcl.springboot.controller;
 
 //import com.hcl.userservice.respository.UserRepository;
 
-import com.hcl.springboot.user.model.Destination;
-import com.hcl.springboot.user.model.Recommendation;
-import com.hcl.springboot.user.model.Review;
-import com.hcl.springboot.user.model.User;
-import com.hcl.springboot.user.respository.UserRepository;
-import org.apache.tomcat.util.json.JSONParser;
+import com.hcl.springboot.model.Recommendation;
+import com.hcl.springboot.respository.UserRepository;
+import com.hcl.springboot.model.Destination;
+import com.hcl.springboot.model.Review;
+import com.hcl.springboot.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

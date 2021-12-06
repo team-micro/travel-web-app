@@ -1,4 +1,4 @@
-package com.hcl.springboot.user.model;
+package com.hcl.springboot.model;
 
 import lombok.Data;
 

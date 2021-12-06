@@ -1,21 +1,14 @@
 # User Service
 
-<<<<<<< Updated upstream
 This is the class handling the backend of a `Web Travel Application` that aggregates and integrates
 the following classes `Recommendation`, `Review`, `Destination`
 
 ## Project Structure
-=======
-This is the class handling the backend of a `Web Travel Application` that aggregates and integrates the following
-classes `Recommendation`, `Review`, `Destination`
-
-## Project Structure
-
->>>>>>> Stashed changes
 ```bash
-.
+UserService/
 ├── build.log
 ├── build.sh
+├── clean.sh
 ├── docker-compose.yml
 ├── Dockerfile
 ├── mvnw
@@ -27,110 +20,120 @@ classes `Recommendation`, `Review`, `Destination`
 │   │   ├── java
 │   │   │   └── com
 │   │   │       └── hcl
-│   │   │           └── userservice
+│   │   │           └── springboot
 │   │   │               ├── controller
 │   │   │               │   └── UserController.java
 │   │   │               ├── model
 │   │   │               │   ├── Destination.java
 │   │   │               │   ├── Recommendation.java
 │   │   │               │   ├── Review.java
+│   │   │               │   ├── Reviews.java
 │   │   │               │   └── User.java
 │   │   │               ├── respository
 │   │   │               │   └── UserRepository.java
+│   │   │               ├── security
+│   │   │               ├── service
+│   │   │               ├── user
 │   │   │               └── UserServiceApplication.java
 │   │   └── resources
 │   │       ├── application.properties
-│   │       ├── _beans.xml
-│   │       ├── uscities.csv
-<<<<<<< Updated upstream
-│   │       ├── user.json
-=======
-│   │       ├── users.json
->>>>>>> Stashed changes
-│   │       └── user_table_schema.sql
+│   │       ├── destination
+│   │       │   ├── destination_schema.sql
+│   │       │   ├── destinations-notebook.ipynb
+│   │       │   ├── generate_sql_destination.py
+│   │       │   ├── test_destinations.sql
+│   │       │   └── uscities.csv
+│   │       ├── recommendation
+│   │       ├── review
+│   │       │   ├── generate_sql_review.py
+│   │       │   ├── review_table_schema.sql
+│   │       │   └── test_reviews.sql
+│   │       └── user
+│   │           ├── _beans.xml
+│   │           ├── generate_sql_users.py
+│   │           ├── test_users.sql
+│   │           ├── user.json
+│   │           ├── users.json
+│   │           └── user_table_schema.sql
 │   └── test
+│       ├── gen_test.py
 │       └── java
 │           └── com
 │               └── hcl
-│                   └── travelcompositeservice
+│                   ├── rest
+│                   │   └── api
+│                   └── springboot
 │                       └── UserServiceApplicationTests.java
 ├── startup.sh
 ├── target
 │   ├── classes
 │   │   ├── application.properties
-│   │   ├── _beans.xml
 │   │   ├── com
 │   │   │   └── hcl
-│   │   │       └── userservice
-│   │   │           ├── controller
-│   │   │           │   └── UserController.class
-│   │   │           ├── model
-│   │   │           │   ├── Destination.class
-│   │   │           │   ├── Recommendation.class
-│   │   │           │   ├── Review.class
-│   │   │           │   └── User.class
-│   │   │           ├── respository
-│   │   │           │   └── UserRepository.class
-│   │   │           └── UserServiceApplication.class
+│   │   │       └── springboot
+│   │   │           └── user
+│   │   │               ├── controller
+│   │   │               │   ├── _UserController_BREAKING.class
+│   │   │               │   └── UserController.class
+│   │   │               ├── model
+│   │   │               │   ├── Destination.class
+│   │   │               │   ├── Recommendation.class
+│   │   │               │   ├── Review.class
+│   │   │               │   ├── Reviews.class
+│   │   │               │   └── User.class
+│   │   │               ├── respository
+│   │   │               │   └── UserRepository.class
+│   │   │               └── UserServiceApplication.class
+│   │   ├── review
+│   │   │   ├── generate_sql_review.py
+│   │   │   ├── review_table_schema.sql
+│   │   │   └── test_reviews.sql
 │   │   ├── uscities.csv
-<<<<<<< Updated upstream
-│   │   ├── user.json
-=======
-│   │   ├── users.json
->>>>>>> Stashed changes
-│   │   └── user_table_schema.sql
+│   │   └── user
+│   │       ├── _beans.xml
+│   │       ├── generate_sql_users.py
+│   │       ├── test_users.sql
+│   │       ├── user.json
+│   │       ├── users.json
+│   │       └── user_table_schema.sql
 │   ├── generated-sources
 │   │   └── annotations
-│   ├── maven-archiver
-│   │   └── pom.properties
-│   ├── maven-status
-│   │   └── maven-compiler-plugin
-│   │       └── compile
-│   │           └── default-compile
-│   │               ├── createdFiles.lst
-│   │               └── inputFiles.lst
-│   ├── UserService-0.0.1-SNAPSHOT.jar
-│   └── UserService-0.0.1-SNAPSHOT.jar.original
+│   ├── generated-test-sources
+│   │   └── test-annotations
+│   └── test-classes
+│       └── com
+│           └── hcl
+│               └── springboot
+│                   └── user
+│                       └── UserServiceApplicationTests.class
 └── UserService.iml
 
 ```
 
 ## Dependencies
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 - MySQL
 - Java JDK 11
 - Maven
 
-<<<<<<< Updated upstream
-
 
 ## Installation & Deployment using Maven & Docker on Linux
 ### Preflight Checklist
 Make sure to have installed all of the following beforehand
-=======
+
 ## Installation & Deployment using Maven & Docker on Linux
 
 ### Preflight Checklist
 
 Make sure to have installed all of the following beforehand
 
->>>>>>> Stashed changes
 - Docker: https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04
 - MySQL
 - Maven
 - JDK 11
 
 ### Compile for Containerization
-<<<<<<< Updated upstream
-1. Within the project root, use `maven` to clean and run the build to compile the application to create the `JAR` file 
-=======
 
 1. Within the project root, use `maven` to clean and run the build to compile the application to create the `JAR` file
-
->>>>>>> Stashed changes
 ```bash
 # remove maven artifacts generated from prior build runs
 mvn clean
@@ -140,13 +143,8 @@ mvn package
 mvn package -Dmaven.test.failure.ignore=true -Dmaven.test.skip=true 
 
 ```
-<<<<<<< Updated upstream
-2. Check the status of `Docker` and start it up if it isn't active
-=======
-
 2. Check the status of `Docker` and start it up if it isn't active
 
->>>>>>> Stashed changes
 ```bash
 # check docker status
 docker info
@@ -157,7 +155,6 @@ service docker info
 # restart docker if needed
 service docker restart
 ```
-<<<<<<< Updated upstream
 3. Update  
 4. 
 
@@ -174,8 +171,6 @@ mvn spring-boot:run
 - [Click here](http://localhost:8080/swagger-ui-custom.html) following for an improved UI of the REST API documentation 
 
 ## Maven Setup
-=======
-
 3. Run the `startup.sh` or use `docker`
 
 ```bash
@@ -206,21 +201,12 @@ mvn spring-boot:run
 
 ## Maven Setup
 
->>>>>>> Stashed changes
 ```
 mvn clean
 mvn compile
 ```
 
-<<<<<<< Updated upstream
-
 ## References
-- Spring Java REST API using OpenAPI 3.0: https://www.baeldung.com/spring-rest-openapi-documentation
-
-=======
-## References
-
 - Spring Java REST API using OpenAPI 3.0: https://www.baeldung.com/spring-rest-openapi-documentation
 - OAuth2: https://spring.io/guides/tutorials/spring-boot-oauth2/
->>>>>>> Stashed changes
-
+- Project structure: https://medium.com/the-resonant-web/spring-boot-2-0-project-structure-and-best-practices-part-2-7137bdcba7d3

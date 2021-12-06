@@ -1,11 +1,9 @@
-package com.hcl.userservice.model;
+package com.hcl.springboot.model;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.annotation.Primary;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 //@Table(name = "users_table")

@@ -1,18 +1,16 @@
-package com.hcl.springboot.user.model;
+package com.hcl.springboot.model;
 /*
  * 1) Create a class for Destination in order for object creation
  * 2) Create getters and setters
  * 3) Make sure we can add 
  */
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Table(schema = "destination_table")
 @Entity
 public class Destination {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	//TO-DO: INCREMENT THE ID FOR MONGODB
 	private int id;
 	private String place;

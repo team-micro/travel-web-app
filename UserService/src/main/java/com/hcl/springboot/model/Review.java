@@ -1,4 +1,4 @@
-package com.hcl.userservice.model;
+package com.hcl.springboot.model;
 
 
 import com.sun.istack.NotNull;
@@ -6,7 +6,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Review")
+@Table(name = "review_table")
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

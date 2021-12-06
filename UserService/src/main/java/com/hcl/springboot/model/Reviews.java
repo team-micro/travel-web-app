@@ -1,10 +1,8 @@
-package com.hcl.userservice.model;
+package com.hcl.springboot.model;
 
 import org.hibernate.mapping.Set;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 //@Entity
 public class Reviews {

@@ -6,21 +6,4 @@ mvn clean && mvn package
 
 # Build image and test run in container
 docker build -t henrylao/user-service:latest .
-<<<<<<< HEAD
-docker push herny
-=======
->>>>>>> bf3cacedcfc4a71d9cad359e62194130b2a3b8df
-docker run henrylao/user-service:latest
-
-# WARNING: 
-# unsafe checking of successful in build
-if docker ps --latest | grep user-service:latest; 
-then 
-    echo $(docker ps --latest | grep henry)
-    exit 0
-else
-    echo $(docker ps --latest | grep henry)
-    exit 1
-fi
-
-
+docker push henrylao

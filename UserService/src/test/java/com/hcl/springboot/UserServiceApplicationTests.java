@@ -1,4 +1,4 @@
-package com.hcl.userservice;
+package com.hcl.springboot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
