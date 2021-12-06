@@ -1,12 +1,12 @@
-package com.hcl.userservice.controller;
+package com.hcl.rest.api.user.controller;
 
 //import com.hcl.userservice.respository.UserRepository;
 
-import com.hcl.userservice.model.Destination;
-import com.hcl.userservice.model.Recommendation;
-import com.hcl.userservice.model.Review;
-import com.hcl.userservice.model.User;
-import com.hcl.userservice.respository.UserRepository;
+import com.hcl.rest.api.user.model.Destination;
+import com.hcl.rest.api.user.model.Recommendation;
+import com.hcl.rest.api.user.model.Review;
+import com.hcl.rest.api.user.model.User;
+import com.hcl.rest.api.user.respository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 //@CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/users")
 public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -40,7 +40,8 @@ public class UserController {
         return matcher.matches();
     }
 
-    @GetMapping("/users")
+//    @GetMapping("/users")
+    @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String userId) {
         logger.trace("GET method all users");
         try {
@@ -65,9 +66,14 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{user_id}")
+//    @GetMapping("/users/{user_id}")
+    @GetMapping("/{user_id}")
     public ResponseEntity<User> getUserById(@PathVariable("user_id") long user_id) {
         Optional<User> userData = userRepository.findById(user_id);
+        // add GET to Review REST API endpoint to query by author == user_id
+
+        // add GET to Destination REST to query?
+
 
         return userData.map(
                 user -> new ResponseEntity<>(user, HttpStatus.OK)
@@ -81,7 +87,8 @@ public class UserController {
      *
      * @return
      */
-    @PostMapping("/users/register")
+//    @PostMapping("/users/register")
+    @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         logger.trace("POST create a new user");
         try {
@@ -128,7 +135,8 @@ public class UserController {
      * @param user
      * @return
      */
-    @PutMapping("/users/{id}")
+//    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         Optional<User> userData = userRepository.findById(id);
         logger.trace("PUT update on existing user");
@@ -159,7 +167,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users?={id}")
+//    @DeleteMapping("/users?={id}")
+    @DeleteMapping("?={id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
         logger.trace("DELETE update on existing user");
         try {
@@ -171,7 +180,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users")
+//    @DeleteMapping("/users")
+    @DeleteMapping("/")
     public ResponseEntity<HttpStatus> deleteAllUsers() {
         logger.trace("PUT update on existing user");
         try {
@@ -193,23 +203,23 @@ public class UserController {
      * @return
      */
     private HttpEntity<? extends Object> pingHelper(Integer port, String resourceName) {
-        logger.trace("PUT update on existing user");
+        logger.trace("GET Method called");
         try {
             // TODO: NOTE endpoint formatting is subject to change, this is for basic integration testing
-            String uri = String.format("http://localhost:%d/api/%s", port, resourceName);
+            String uri = String.format("http://localhost:%d//%s", port, resourceName);
             System.out.println("Pinged: " + uri);
             RestTemplate restTemplate = new RestTemplate();
             Object result = null;
             if (resourceName.equals("review")) {
-                logger.trace("PUT update on existing user");
+                logger.trace("GET Method called");
 
                 result = (Review) restTemplate.getForObject(uri, Review.class);
             } else if (resourceName.equals("destination")) {
-                logger.trace("PUT update on existing user");
+                logger.trace("GET Method called");
 
                 result = (Destination) restTemplate.getForObject(uri, Destination.class);
             } else if (resourceName.equals("recommendation")) {
-                logger.trace("PUT update on existing user");
+                logger.trace("GET Method called");
 
                 result = (Recommendation) restTemplate.getForObject(uri, Recommendation.class);
             }

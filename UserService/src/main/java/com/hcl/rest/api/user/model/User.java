@@ -1,10 +1,11 @@
 package com.hcl.userservice.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.annotation.Primary;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 //@Table(name = "users_table")
@@ -14,14 +15,15 @@ public class User {
     // -----------------------------------------
     //    ATTRIBUTES
     // -----------------------------------------
-    //  MINIMUM SPEC
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int userId;
+
     @NonNull
-//    @Column(name = "email")
+    @Column(name = "email")
     private String email;
+
     @NonNull
     @Column(name = "password")
     private String password;
@@ -46,11 +48,19 @@ public class User {
 //    @OneToMany(mappedBy = "")
 //    private List<Review> destinationIds;
 
+//    @Column(name = "reviews_id")
+//    private String reviewsId;
+
+//    @OneToMany(mappedBy = "Review")
+//    private Set<Review> reviews;
+
+//    private
 //    @OneToMany(mappedBy = "reviews")
-//    private List<String> reviewIds;
+//    private List<String> reviewIds = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "recommendations")
-//    private List<Recommendation> recommendations = new ArrayList<>();
+//    private Set<? extends Object> recommendations;
+//    = new ArrayList<>();
 
     //	//    The target destination supplied by Destination service
 //	@Column(name = "destination")
