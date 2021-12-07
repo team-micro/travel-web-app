@@ -17,7 +17,7 @@ public class Utility {
      * @param extension
      * @return - String | body of the response
      */
-    public static String getJSONArrayAt(String uriEndpoint, int port, String resourceName, String extension) {
+    public static String getJSONAtEndpoint(String uriEndpoint, int port, String resourceName, String extension) {
 //        final String uri = String.format("http://localhost:%d//%s//%s", port, resourceName, extension);
         final String uri = String.format(uriEndpoint, port, resourceName, extension);
         logger.trace(uri);
@@ -26,4 +26,5 @@ public class Utility {
         logger.trace(String.valueOf(response));
         return String.valueOf(response.getBody());
     }
+
 }
