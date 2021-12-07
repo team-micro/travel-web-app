@@ -2,10 +2,7 @@ package com.hcl.recommendservice.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -13,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class Recommendation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long recommendationId;
 
     @NotBlank
