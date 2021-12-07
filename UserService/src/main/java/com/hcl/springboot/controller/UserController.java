@@ -1,7 +1,5 @@
 package com.hcl.springboot.controller;
 
-//import com.hcl.userservice.respository.UserRepository;
-
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.hcl.springboot.controller.http.UserRoute;
@@ -142,12 +140,13 @@ public class UserController
     /**
      * GET Method for accessing the list of Destinations based upon Recommendations
      * associated with the User
+     *
      * @param user_id
      * @return
      * @throws JSONException
      */
     @GetMapping("/users/{user_id}/destinations")
-    public ResponseEntity<List<Recommendation>> getUserDestinationsByRecommendation(@PathVariable("user_id") Integer user_id
+    public ResponseEntity<List<Destination>> getUserDestinationsByRecommendation(@PathVariable("user_id") Integer user_id
 //            , @PathVariable("dest_id" ) Integer dest_id
     ) throws JSONException {
         logger.trace("=========== START [GET] User's Destinations by Recommendations ============= ");
@@ -155,22 +154,57 @@ public class UserController
         List<Recommendation> recommendations = response.getBody();
         // sort destinations by rating
         List<Destination> destinations = new ArrayList<>();
-        for (Recommendation r: recommendations){
+        Destination d;
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+
+
+        for (Recommendation r : recommendations) {
 //            r.getDestId()
-            String jsonObject = Utility.getJSONAtEndpoint(
-                "http://localhost:%d//%s//%s",
-                8100,
-                "destination",
+            String jsonObjectStr = Utility.getJSONAtEndpoint(
+                    "http://localhost:%d//%s//%s",
+                    8100,
+                    "destinations",
                     String.format("%d", r.getDestId())
             );
-            logger.trace(jsonObject);
+            Map<String, String> destinationMap = gson.fromJson(jsonObjectStr, type);
+            logger.trace("GSON: " + destinationMap.toString());
+            d = new Destination();
+            logger.trace(destinationMap.get("id"));
+            // TODO: breaking -- unsure why
+//            d.setDestId(Integer.parseInt(destinationMap.get("id")));
+            d.setPlace(destinationMap.get("place"));
+            d.setCountry(destinationMap.get("country"));
+            d.setLatitude(Float.parseFloat(destinationMap.get("latitude")));
+            d.setLongitude(Float.parseFloat(destinationMap.get("longitude")));
+            d.setInfo(destinationMap.get("info"));
+            d.setImage(destinationMap.get("image")); // TODO: this can either be an image hosted somewhere on the cloud
+
+            logger.trace(jsonObjectStr);
+            destinations.add(d);
         }
+
+        // TODO: sort based on rating
+//        destinations.sort();
+//        Collections.sort(destinations, new Comparator<Destination>() {
+//            @Override
+//            public int compare(Destination o1, Destination o2) {
+//                o1.get
+//            }
+//        })
+
         logger.trace("=========== END [GET] User's Destinations by Recommendations ============= ");
-        return null;
+        if (destinations.size() < 1) {
+            return new ResponseEntity<>(destinations, HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(destinations, HttpStatus.OK);
+        }
     }
 
     /**
      * GET Method for accessing the list of Recommendations for the User
+     *
      * @param user_id
      * @return
      * @throws JSONException
