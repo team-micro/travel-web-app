@@ -16,7 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="DestinationService" target="11" />
+      <module name="DestinationService" target="1.8" />
       <module name="EurekaService" target="11" />
       <module name="EurekaServiceRegistry" target="11" />
       <module name="RecommendService" target="11" />

@@ -6,7 +6,7 @@ import com.sun.istack.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Review")
+@Table(name = "reviews")
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
