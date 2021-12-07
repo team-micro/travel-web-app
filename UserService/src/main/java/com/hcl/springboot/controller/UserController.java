@@ -79,10 +79,9 @@ public class UserController
      *
      * @param user_id
      * @return
-     * @throws JSONException
      */
     @GetMapping("/users/{user_id}/reviews")
-    public ResponseEntity<List<Review>> getUserAllReviews(@PathVariable("user_id") Integer user_id) throws JSONException {
+    public ResponseEntity<List<Review>> getUserAllReviews(@PathVariable("user_id") Integer user_id) {
         logger.trace("=========== START [GET] User's Reviews ============= ");
         Map<String, Object> rv = new HashMap<>();
         Optional<User> userData = userRepository.findById(user_id);
@@ -244,10 +243,9 @@ public class UserController
      *
      * @param user_id
      * @return
-     * @throws JSONException
      */
     @GetMapping("/users/{user_id}")
-    public ResponseEntity<User> getUserById(@PathVariable("user_id") int user_id) throws JSONException {
+    public ResponseEntity<User> getUserById(@PathVariable("user_id") int user_id) {
         Optional<User> userData = userRepository.findById(user_id);
         return userData.map(
                 user -> new ResponseEntity<>(user, HttpStatus.OK)

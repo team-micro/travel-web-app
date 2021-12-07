@@ -1,13 +1,10 @@
 package com.hcl.springboot.model;
 
 import lombok.NonNull;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Entity
 //@Table(name = "users_table")
