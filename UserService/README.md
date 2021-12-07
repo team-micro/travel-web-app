@@ -45,8 +45,8 @@ UserService/
 │   │       │   └── uscities.csv
 │   │       ├── recommendation
 │   │       ├── review
-│   │       │   ├── generate_sql_review.py
-│   │       │   ├── review_table_schema.sql
+│   │       │   ├── generate_sql_recommendation.py
+│   │       │   ├── recommendation_table_schema.sql
 │   │       │   └── test_reviews.sql
 │   │       └── user
 │   │           ├── _beans.xml
@@ -56,7 +56,7 @@ UserService/
 │   │           ├── users.json
 │   │           └── user_table_schema.sql
 │   └── test
-│       ├── gen_test.py
+│       ├── generic_sql_generation.py
 │       └── java
 │           └── com
 │               └── hcl
@@ -85,8 +85,8 @@ UserService/
 │   │   │               │   └── UserRepository.class
 │   │   │               └── UserServiceApplication.class
 │   │   ├── review
-│   │   │   ├── generate_sql_review.py
-│   │   │   ├── review_table_schema.sql
+│   │   │   ├── generate_sql_recommendation.py
+│   │   │   ├── recommendation_table_schema.sql
 │   │   │   └── test_reviews.sql
 │   │   ├── uscities.csv
 │   │   └── user

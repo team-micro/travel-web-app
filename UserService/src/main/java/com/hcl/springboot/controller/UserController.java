@@ -2,42 +2,42 @@ package com.hcl.springboot.controller;
 
 //import com.hcl.userservice.respository.UserRepository;
 
-import com.hcl.springboot.model.Recommendation;
-import com.hcl.springboot.respository.UserRepository;
-import com.hcl.springboot.model.Destination;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.hcl.springboot.controller.http.UserRoute;
 import com.hcl.springboot.model.Review;
 import com.hcl.springboot.model.User;
+import com.hcl.springboot.respository.UserRepository;
+import com.hcl.springboot.rest.Utility;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Type;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//@CrossOrigin(origins = "http://localhost:8081")
+//@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/v1")
-public class UserController {
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    boolean DEBUG = true;
+public class UserController
+        extends UserRoute {
+    /********************************************************
+     * Attributes
+     ********************************************************/
     @Autowired
     UserRepository userRepository;
+    Logger logger = LoggerFactory.getLogger(UserController.class);
+    boolean DEBUG = true;
 
-    public boolean isValidPassword(String password) {
-        logger.trace("Home method accessed");
-        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
+    /********************************************************
+     * REST API GET Methods
+     ********************************************************/
 
     /**
      * GET Method for reading all users in the database reflecting only a collection
@@ -72,23 +72,97 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{user_id}")
-    public ResponseEntity<User> getUserById(@PathVariable("user_id") int user_id) {
+    /**
+     * GET Method for accessing all the Reviews mapped to the specified User
+     * by `user_id`
+     *
+     * @param user_id
+     * @return
+     * @throws JSONException
+     */
+    @GetMapping("/users/{user_id}/reviews")
+    public ResponseEntity<List<Review>> getUserAllReviews(@PathVariable("user_id") Integer user_id) throws JSONException {
+        logger.trace("=========== START [GET] User's Reviews ============= ");
+        Map<String, Object> rv = new HashMap<>();
         Optional<User> userData = userRepository.findById(user_id);
-        // add GET to Review REST API endpoint to query by author == user_id
-        this.pingHelper(8085, "review/all");
-        // add GET to Destination REST to query?
+
+        // TODO: add GET to Review REST API endpoint to query by author == user_id
+        String reviewsJsonStr = Utility.getJSONArrayAt(
+                "http://localhost:%d//%s//%s",
+                8085,
+                "reviews",
+                "all"
+        );
+        logger.trace("JSON Reviews:" + reviewsJsonStr);
+
+        // convert from JSON string to Java types
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Map<String, String>>>() {
+        }.getType();
+        List<Map<String, String>> reviews = gson.fromJson(reviewsJsonStr, type);
+        logger.trace("GSON: " + reviews.toString());
+        logger.trace(String.valueOf(userData.get().getUserId()));
 
 
+        // TODO: reviews needs an endpoint for searching by Author
+        // current implementation simply aggregates all reviews and returns
+        List<Review> reviewList = new ArrayList<>();
+        Review jsonParsed = null;
+        String author, uid;
+        uid = String.valueOf(user_id);
+        for (Map<String, String> r : reviews) {
+            if (r.isEmpty()) {
+                continue;
+            }
+//            author = Integer.getInteger(r.get("author"));
+            author = r.get("author");
+//            logger.trace(String.format("author: %d\tuser_id:%d", author, user_id));
+//            if (Integer.getInteger(author).equals(user_id)) {
+
+            // check if review's author matches the user's id
+            if (author.equals(uid)) {
+                logger.trace("Found matching author: " + author);
+                jsonParsed = new Review();
+                jsonParsed.setAuthor(author);
+                jsonParsed.setId(Integer.parseInt(r.get("id")));
+                jsonParsed.setDestId(Integer.parseInt(r.get("destId")));
+                jsonParsed.setSubject(r.get("subject"));
+                jsonParsed.setContent(r.get("content"));
+                reviewList.add(jsonParsed);
+            }
+        }
+
+        logger.trace("Returning " + reviewList.toString());
+        logger.trace("=========== END [GET] User's Reviews ============= ");
+
+        if (reviewList.size() > 0) {
+            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(reviewList, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    /**
+     * GET Method for reading a specific User from the target database
+     *
+     * @param user_id
+     * @return
+     * @throws JSONException
+     */
+    @GetMapping("/users/{user_id}")
+    public ResponseEntity<User> getUserById(@PathVariable("user_id") int user_id) throws JSONException {
+        Optional<User> userData = userRepository.findById(user_id);
         return userData.map(
                 user -> new ResponseEntity<>(user, HttpStatus.OK)
         ).orElseGet(
                 () -> new ResponseEntity<>(HttpStatus.NOT_FOUND)
         );
     }
-
+    /********************************************************
+     * REST API POST Methods
+     ********************************************************/
     /**
-     * CREATE method for a User requiring an EMAIL and PASSWORD
+     * POST method for CREATING a User requiring an EMAIL and PASSWORD
      *
      * @return
      */
@@ -131,6 +205,9 @@ public class UserController {
         }
     }
 
+    /********************************************************
+     * REST API POST Methods
+     ********************************************************/
     /**
      * UPDATE method for USER entities
      * TODO: add DESTINATION, REVIEW, RECOMMENDATION
@@ -170,6 +247,9 @@ public class UserController {
         }
     }
 
+    /********************************************************
+     * REST API DELETE Methods
+     ********************************************************/
     @DeleteMapping("/users?={id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id) {
         logger.trace("DELETE update on existing user");
@@ -193,89 +273,17 @@ public class UserController {
             logger.error("DELETE update on existing user");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
-    /**
-     * Method for ping a particular service at a specific port for testing
-     *
-     * @param port
-     * @param resourceName
-     * @return
-     */
-    private ResponseEntity<Object[]> pingHelper(Integer port, String resourceName) {
-        logger.trace("GET Method called");
-        try {
-            // TODO: NOTE endpoint formatting is subject to change, this is for basic integration testing
-            String uri = String.format("http://localhost:%d//%s", port, resourceName);
-            System.out.println("Pinged: " + uri);
-            RestTemplate restTemplate = new RestTemplate();
-//            ResponseEntity<List<? extends Object>> reviews = new ArrayList<>();
-            Object result = new ArrayList<>();
-            if (resourceName.contains("review")) {
-                logger.trace("GET Method called");
-//                JSONParser parser = new JSONParser();
-                result = restTemplate.getForEntity(uri, Review[].class);
-                logger.trace(result.toString());
-            } else if (resourceName.contains("destination")) {
-                logger.trace("GET Method called");
+    /********************************************************
+     * Utility Methods
+     ********************************************************/
 
-                result = (Destination) restTemplate.getForObject(uri, Destination.class);
-            } else if (resourceName.contains("recommendation")) {
-                logger.trace("GET Method called");
-
-                result = (Recommendation) restTemplate.getForObject(uri, Recommendation.class);
-            }
-
-            if (result == null) {
-                logger.trace("PUT update on existing user");
-
-
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            } else {
-                logger.trace("PUT update on existing user");
-                // TODO: should be the following
-                //  return new ResponseEntity<>(result, HttpStatus.OK);
-                return new ResponseEntity<>(null, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            logger.trace("PUT update on existing user");
-
-            System.out.println(e);
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    public boolean isValidPassword(String password) {
+        logger.trace("Home method accessed");
+        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
-
-    // TODO: add REST API call to REVIEW, RECOMMENDATION, DESTINATION for aggregation
-    // TODO: migrate the following test pings to a JUNIT test
-    // TODO: perform local testing with the `uscities.csv` file
-    // TODO: perform local testing using `_beans.xml` when defining classes instead of statically typed classes in model
-    // TODO: add tests for USER class
-    // TODO: migrate to a MYSQL/POSTGRESQL database from H2
-
-//    @GetMapping("/users/reviews/test")
-//
-//    public ResponseEntity<HttpStatus> pingReviewService() {
-//        logger.trace("PUT update on existing user");
-//
-//        // TODO: add REVIEW endpoint
-//        return (ResponseEntity<HttpStatus>) pingHelper(8081, "review");
-//    }
-//
-//    @GetMapping("/users/destinations/test")
-//    public ResponseEntity<HttpStatus> pingDestinationService() {
-//        logger.trace("PUT update on existing user");
-//
-//        // TODO: add DESTINATION endpoint
-//        return (ResponseEntity<HttpStatus>) pingHelper(8082, "destination");
-//    }
-//
-//    @GetMapping("/users/recommendations/test")
-//    public ResponseEntity<HttpStatus> pingRecommendService() {
-//        logger.trace("PUT update on existing user");
-//
-//        // TODO: add RECOMMENDATION endpoint
-//        return (ResponseEntity<HttpStatus>) pingHelper(8083, "recommendation");
-//    }
-
 }

@@ -6,7 +6,7 @@ package com.hcl.springboot.model;
  */
 import javax.persistence.*;
 
-@Table(schema = "destination_table")
+@Table(schema = "destinations")
 @Entity
 public class Destination {
 	@Id
