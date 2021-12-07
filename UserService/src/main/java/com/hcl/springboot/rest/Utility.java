@@ -11,10 +11,10 @@ public class Utility {
     /**
      * GET Method for querying REST API endpoints for JSON Arrays
      *
-     * @param uriEndpoint String | Ex. http://localhost:%d//%s//%s
-     * @param port - int
-     * @param resourceName - String | Ex. http://localhost:[port]//[resourceName]//[extension]
-     * @param extension - String | Ex. http://localhost:[port]//[resourceName]//[extension]
+     * @param uriEndpoint Ex. http://localhost:%d//%s//%s
+     * @param port
+     * @param resourceName
+     * @param extension
      * @return - String | body of the response
      */
     public static String getJSONArrayAt(String uriEndpoint, int port, String resourceName, String extension) {
