@@ -1,6 +1,21 @@
 # Travel Application using Microservices
 ## Overview
-A travel application implemented using a microservice-based approach to build modular and scalable backend web-services to be ready to be deployed to the cloud 
+A travel application implemented using `Java Spring Boot` 
+applying a microservice-based approach to build modular 
+and scalable `Docker` based `REST API` web-services ready to be deployed to the cloud.
+
+## Dependencies
+### Core
+- Spring Boot
+- Java JDK 11
+- MySQL
+- Docker
+
+### Testing
+- Python 3.9
+- 
+
+
 ## Project Structure
 ```
 .
@@ -54,13 +69,7 @@ A travel application implemented using a microservice-based approach to build mo
         ├── maven-status
         ├── surefire-reports
         └── test-classes
-
 ```
-
-## Dependencies
-- Spring Boot
-- Java JDK 11
-- MySQL
 
 ## Setup
 
