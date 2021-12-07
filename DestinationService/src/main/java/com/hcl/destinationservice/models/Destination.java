@@ -5,7 +5,7 @@ package com.hcl.destinationservice.models;/*
  */
 import javax.persistence.*;
 
-@Table(schema = "destination_table")
+@Table(schema = "destinations")
 @Entity
 public class Destination {
 	@Id
