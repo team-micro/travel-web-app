@@ -13,7 +13,6 @@ and scalable `Docker` based `REST API` web-services ready to be deployed to the 
 
 ### Testing
 - Python 3.9
-- 
 
 
 ## Project Structure
