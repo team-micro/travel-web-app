@@ -1,3 +1,4 @@
+# !/usr/bin/bash
 # 1. Run Maven commands by selecting from the following
 # Run with testing
 mvn clean && mvn package
