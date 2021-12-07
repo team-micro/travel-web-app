@@ -1,0 +1,11 @@
+version: '2'
+services:
+  springbootapp:
+    image: henrylao/user-service:0.0.2
+    container_name: restful-springbootapp
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database-1.cfvjhgdcdo6z.us-west-1.rds.amazonaws.com:3306/internsample5
+      - spring_datasource_username=admin
+      - spring_datasource_password=adminhrhk
+    ports:
+      - 8080:8090
